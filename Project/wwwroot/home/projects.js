@@ -114,16 +114,16 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
         var selectList6 = document.createElement("select");
         let titleProject = document.createElement('p')
         let duebyProject = document.createElement('p')
-        duebyProject.setAttribute('id', 'title2')
+        duebyProject.setAttribute('class', 'title2')
         duebyProject.innerHTML = project.dueBy
-        titleProject.setAttribute('id', 'title1')
-        selectList.setAttribute('id', 'selectList')
-        selectList1.setAttribute('id', 'selectList1')
-        selectList2.setAttribute('id', 'selectList2')
-        selectList3.setAttribute('id', 'selectList3')
-        selectList4.setAttribute('id', 'selectList4')
-        selectList5.setAttribute('id', 'selectList5')
-        selectList6.setAttribute('id', 'selectList6')
+        titleProject.setAttribute('class', 'title1')
+        selectList.setAttribute('class', 'selectList')
+        selectList1.setAttribute('class', 'selectList1')
+        selectList2.setAttribute('class', 'selectList2')
+        selectList3.setAttribute('class', 'selectList3')
+        selectList4.setAttribute('class', 'selectList4')
+        selectList5.setAttribute('class', 'selectList5')
+        selectList6.setAttribute('class', 'selectList6')
         titleProject.innerHTML = project.title
         for (var i = 0; i < checkList.length; i++) {
             var option = document.createElement("option")
@@ -207,9 +207,15 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
         container.appendChild(div6)
         container.appendChild(div7)
         container.appendChild(div8)
-
-
-        
+        var g = document.getElementById("container1").querySelectorAll("div")
+        for (i = 0; i < g.length; i++) {
+            g[i].setAttribute("class", "projectDiv")
+        }
+        alert("Your Project Has Been Created!")
+    } else {
+        if (response.status = 500) {
+            await addProject(projectName, owner, dueby, brief, research, concept, design, mockup, progress, priority)
+        }
     }
 }
 
