@@ -72,7 +72,7 @@ app.MapPost("/api/projects", async (ProjectModel projectData, ApplicationContext
     {
         await db.Projects.AddAsync(projectData);
         await db.SaveChangesAsync();
-        return Results.Ok(new { message = "Project created with title" + projectData.Title });
+        return Results.Ok(projectData);
 
     }
     else
