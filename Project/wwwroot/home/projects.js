@@ -1,15 +1,28 @@
-﻿document.getElementById('logout').addEventListener('click', e => {
+﻿console.log(document.getElementById('saveProject'))
+
+
+document.getElementById('logout').addEventListener('click', e => {
     localStorage.removeItem('Username')
     window.location = "https://localhost:7043/index"
 
 })
+console.log(document.getElementById('saveProject'))
 
-document.getElementById('project').addEventListener('click', e => {
-    console.log("????????????????")
+document.getElementById('saveProject').addEventListener('click', e => {
     e.preventDefault();
-    console.log("????????????????")
-    test()
-    console.log("????????????????")
+    const form = document.forms['projectForm'];
+    var mockup = form.elements['mockup'].value
+    var title = form.elements['title'].value
+    var dueby = form.elements['dueby'].value
+    var brief = form.elements['brief'].value
+    var research = form.elements['research'].value
+    var concept = form.elements['concept'].value
+    var priority = form.elements['priority'].value
+    var progress = form.elements['progress'].value
+    var design = form.elements['design'].value
+    
+    console.log(mockup + title + dueby+brief+research+concept+priority+progress+design)
+
 })
 
 async function test() {
@@ -26,7 +39,7 @@ async function test() {
 }
 
 
-async function addProject(projectName, owner) {
+async function addProject(projectName, owner, dueby, brief, research, concept, design, mockup, progress, priority) {
     var currentdate = new Date();
     var datetime = "Last Sync: " + currentdate.getDate() + "/"
         + (currentdate.getMonth() + 1) + "/"
@@ -46,4 +59,3 @@ async function addProject(projectName, owner) {
     })
 }
 
-setTimeout(function () { window.location.reload(); }, 4000);

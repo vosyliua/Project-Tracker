@@ -16,7 +16,7 @@
             font-size:20px;
            
         }
-        #project {
+        #saveProject {
             position:fixed;
             bottom:75%;
 
@@ -66,11 +66,11 @@
     <form class="wrapper" name="projectForm">
         <div>
             <label class="form-label22" for="title">Project Title</label>
-            <input class="forn-control22" name="title" />
+            <input id="title" class="forn-control22" name="title" />
         </div>
         <div>
             <label class="form-label22" for="dueby">Due By</label>
-            <input type="date"class="forn-control22" name="dueby" />
+            <input id="dueby" type="date" class="forn-control22" name="dueby" />
         </div>
         <div>
             <label class="form-label22" for="brief">Brief Status</label>
@@ -98,7 +98,7 @@
         </div>
         <div>
             <label class="form-label22" for="project">Design Status</label>
-            <select name="design" id="priority">
+            <select name="design" id="design">
                 <option value="Not Started">Not Started</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Done">Done</option>
@@ -133,11 +133,12 @@
                 <option value="5/5">5/5</option>
             </select>
         </div>
-        <script type="text/javascript" src="projects.js?v=3"></script>
+
     </form>
 
-    <button type="submit" id="project"> Save</button>
+    <button type="submit" id="saveProject"> Save</button>
     <button type="submit" id="logout"> Logout</button>
+    <script type="text/javascript" src="projects.js?v=3"></script>
 
 
 </body>
