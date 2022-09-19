@@ -57,4 +57,11 @@ app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db) =>
 });
 
 
+app.MapGet("/api/usersall", async (ApplicationContext db) =>
+{
+     var people = await db.Accounts.ToListAsync();
+    return Results.Ok(people);
+    
+});
+
 app.Run();

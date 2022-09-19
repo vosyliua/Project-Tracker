@@ -2,12 +2,143 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Web API</title>
+    <title>Web API1</title>
+    <style>
+        .wrapper {
+            position:fixed;
+            display: grid;
+            grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+            left:130px;
+            column-gap: 1rem;
+            top:12%;
+        }
+        .form-label22{
+            font-size:20px;
+           
+        }
+        #project {
+            position:fixed;
+            bottom:75%;
+
+            font-size:30px;
+            width:100%;
+        }
+        #logout{
+            position:fixed;
+            font-size:20px;
+            right:1%;
+            top:2%;
+        }
+        #mainTitle{
+            position:fixed;
+            left:45%;
+            font-size:35px;
+        }
+        #brief{
+            width:150px;
+        }
+        #dueby {
+            width: 150px;
+        }
+        #concept {
+            width: 150px;
+            #brief
+        }
+        #research {
+            width: 150px;
+        }
+        #priority {
+            width: 150px;
+        }
+        #progress {
+            width: 150px;
+        }
+        #mockup {
+            width: 150px;
+        }
+        
+
+
+    </style>
 </head>
 <body>
-    <h2>hello</h2>
+    <h2 id="mainTitle">Project Tracking</h2>
+    <form class="wrapper" name="projectForm">
+        <div>
+            <label class="form-label22" for="title">Project Title</label>
+            <input class="forn-control22" name="title" />
+        </div>
+        <div>
+            <label class="form-label22" for="dueby">Due By</label>
+            <input type="date"class="forn-control22" name="dueby" />
+        </div>
+        <div>
+            <label class="form-label22" for="brief">Brief Status</label>
+            <select name="brief" id="brief">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label22" for="research">Research Status</label>
+            <select name="research" id="research">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label22" for="project">Concept Status</label>
+            <select name="concept" id="concept">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label22" for="project">Design Status</label>
+            <select name="design" id="priority">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label22" for="project">Mockup Status</label>
+            <select name="mockup" id="mockup">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label22" for="project">Progress</label>
+            <select name="progress" id="progress">
+                <option value="0%">0%</option>
+                <option value="20%">20%</option>
+                <option value="40%">40%</option>
+                <option value="60%">60%</option>
+                <option value="80%">80%</option>
+                <option value="100%">100%</option>
+            </select>
+        </div>
+        <div>
+            <label class="form-label22" for="project">Priority</label>
+            <select name="priority" id="priority">
+                <option value="1/5">1/5</option>
+                <option value="2/5">2/5</option>
+                <option value="3/5">3/5</option>
+                <option value="4/5">4/5</option>
+                <option value="5/5">5/5</option>
+            </select>
+        </div>
+        <script type="text/javascript" src="projects.js?v=3"></script>
+    </form>
 
-    <button id="logout"> Logout</button>
-    <script type="text/javascript" src="projects.js"></script>
+    <button type="submit" id="project"> Save</button>
+    <button type="submit" id="logout"> Logout</button>
+
+
 </body>
 </html>

@@ -22,46 +22,64 @@ document.getElementById('register').addEventListener('click', e => {
 
 
 
-async function Login(username,password) {
-    const response = await fetch("/api/users", {
-        method: 'POST',
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            Username: username,
-            Password: password
-        })
-    })
-    if (response.ok === true) {
-        console.log("found in db")
-        localStorage.setItem('Username', username)
-        window.location.replace("https://localhost:7043/index/home/projects.html");
-        
+async function Login(username, password) {
+    console.log(username.length)
+    
+    if (username.length >= 6) {
+        if (password.length >= 6) {
+            const response = await fetch("/api/users", {
+                method: 'POST',
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Username: username,
+                    Password: password
+                })
+            })
+            if (response.ok === true) {
+                console.log("found in db")
+                localStorage.setItem('Username', username)
+                window.location ="https://localhost:7043/index/home/projects.html"
+
+
+            }
+            else {
+                console.log("not found")
+            }
+
+        }
     }
     else {
-        console.log("not found")
-    }
+        alert("Password and Username need to be greater than 6 symbols in lenght")
+    }   
 
 }
 
 async function Register(usernameR, passwordR) {
-    console.log(usernameR + "in func")
-    const response = await fetch("/api/usersR", {
-        method: 'POST',
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            Username: usernameR,
-            Password: passwordR
-        })
-    })
-    if (response.ok === true) {
-        console.log("User registered")
-        console.log(await response.json())
+    if (usernameR.length >= 6) {
+        if (passwordR.length >= 6) {
+            console.log(usernameR + "in func")
+            const response = await fetch("/api/usersR", {
+                method: 'POST',
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Username: usernameR,
+                    Password: passwordR
+                })
+            })
+            if (response.ok === true) {
+                console.log("User registered")
+                console.log(await response.json())
+            }
+            else {
+                console.log(await response.json())
+                console.log("Not registered")
+                console.log(await response.json())
+            }
+        }
+    } else {
+        alert("Password and Username need to be greater than 6 symbols in lenght")
     }
-    else {
-        console.log(await response.json())
-        console.log("Not registered")
-        console.log(await response.json())
-    }
+    
 
 }
 

@@ -58,3 +58,5 @@ C:\Users\arnas\source\repos\Project\Project\obj\Debug\net6.0\refint\Project.dll
 C:\Users\arnas\source\repos\Project\Project\obj\Debug\net6.0\Project.pdb
 C:\Users\arnas\source\repos\Project\Project\obj\Debug\net6.0\Project.genruntimeconfig.cache
 C:\Users\arnas\source\repos\Project\Project\obj\Debug\net6.0\ref\Project.dll
+C:\Users\arnas\source\repos\Project\Project\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\arnas\source\repos\Project\Project\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
