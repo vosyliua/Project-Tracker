@@ -1,5 +1,24 @@
-﻿console.log(document.getElementById('saveProject'))
+﻿
+async function getProjects() {
+    const response = await fetch("/api/projects", {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+    })
+    if (response.ok) {
+        var projects = await response.json();
+        return projects
+    } else {
+        console.log("error")
+    }
+}
 
+async function setup() {
+    var projects = await getProjects();
+    projects.forEach(project => {
+        console.log(project)
+
+    })
+}
 
 document.getElementById('logout').addEventListener('click', e => {
     localStorage.removeItem('Username')
@@ -10,6 +29,7 @@ console.log(document.getElementById('saveProject'))
 
 document.getElementById('saveProject').addEventListener('click', e => {
     e.preventDefault();
+    var owner = localStorage.getItem('Username')
     const form = document.forms['projectForm'];
     var mockup = form.elements['mockup'].value
     var title = form.elements['title'].value
@@ -20,24 +40,37 @@ document.getElementById('saveProject').addEventListener('click', e => {
     var priority = form.elements['priority'].value
     var progress = form.elements['progress'].value
     var design = form.elements['design'].value
-    
-    console.log(mockup + title + dueby+brief+research+concept+priority+progress+design)
+    console.log(owner)
+    if (owner != null) {
+        addProject(title, owner, dueby, brief, research, concept, design, mockup, progress, priority)
+    } else {
+        alert("only logged in users can create a project")
+        var currentdate = new Date();
+        var datetime = "Last Sync: " + currentdate.getDate() + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + " @ "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+        console.log(typeof(datetime))
+    }
+
+
+
+
 
 })
 
 async function test() {
-    console.log("????????????????")
-    console.log("in func")
     const response = await fetch("/api/usersall", {
         method: 'GET',
-        headers: { "Accept": "application/json" }
+        headers: {'Accept':'application/json'}
     })
     if (response.ok) {
-        var people = await response.json()
-        console.log(people)
+        var dude = await response.json()
+        console.log(dude)
     }
 }
-
 
 async function addProject(projectName, owner, dueby, brief, research, concept, design, mockup, progress, priority) {
     var currentdate = new Date();
@@ -51,11 +84,28 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
         method: 'POST',
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
+            Date: datetime,
             Title: projectName,
             Owner: owner,
-            Date: currentdate,
-
+            DueBy: dueby,
+            BriefStatus: brief,
+            ResearchStatus: research,
+            ConceptStatus: concept,
+            DesignStatus: design,
+            MockupStatus: mockup,
+            Progress: progress,
+            Priority:priority
         })
     })
+    if (response.ok) {
+        console.log("it worked?")
+        console.log(await response.json())
+        setup()
+    }
 }
 
+
+
+
+
+setup();

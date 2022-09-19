@@ -5,7 +5,7 @@ using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
-string connection = "Server=(localdb)\\mssqllocaldb; Database=project; Trusted_Connection=True";
+string connection = "Server=(localdb)\\mssqllocaldb; Database=project; Trusted_Connection=True; MultipleActiveResultSets=True";
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 builder.Services.AddDirectoryBrowser();
 var app = builder.Build();
@@ -63,5 +63,29 @@ app.MapGet("/api/usersall", async (ApplicationContext db) =>
     return Results.Ok(people);
     
 });
+
+
+app.MapPost("/api/projects", async (ProjectModel projectData, ApplicationContext db) =>
+{
+    ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Title == projectData.Title);
+    if(project== null)
+    {
+        await db.Projects.AddAsync(projectData);
+        await db.SaveChangesAsync();
+        return Results.Ok(new { message = "Project created with title" + projectData.Title });
+
+    }
+    else
+    {
+        return Results.Conflict(new { message = "Could not add project" + projectData.Title });
+    }
+});
+
+app.MapGet("/api/projects", async (ApplicationContext db) =>
+{
+    var projects = await db.Projects.ToListAsync();
+    return Results.Ok(projects);
+});
+
 
 app.Run();

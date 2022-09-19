@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Project
 {
-    public class Project
+    public class ProjectModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Date { get; set; } = ""; // auto to keep track where to put this project
+        public string Date { get; set; } = ""; 
         public string Title { get; set; } = "";
         public string Owner { get; set; } = "";
         public string DueBy { get; set; } = "";
