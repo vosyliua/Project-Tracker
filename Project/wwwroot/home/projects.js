@@ -1,4 +1,4 @@
-﻿
+﻿console.log(document.getElementById('container1'))
 async function getProjects() {
     const response = await fetch("/api/projects", {
         method: 'GET',
@@ -6,19 +6,15 @@ async function getProjects() {
     })
     if (response.ok) {
         var projects = await response.json();
+        console.log(projects)
         return projects
-    } else {
-        console.log("error")
+    }
+    if (response.status = 500) {
+        var projects1 = await getProjects()
+        return projects1
     }
 }
 
-async function setup() {
-    var projects = await getProjects();
-    projects.forEach(project => {
-        console.log(project)
-
-    })
-}
 
 document.getElementById('logout').addEventListener('click', e => {
     localStorage.removeItem('Username')
@@ -105,7 +101,126 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
 }
 
 
+async function setup() {
+    let checkList = ["Not Started", "In Progress", "Done"]
+    let checkList1 = ["0%", "20%", "40%", "60%", "80%", "100%"]
+    let checkList2 = ["1/5", "2/5", "3/5", "4/5", "5/5"]
+    var container = document.getElementById('container1')
+    var projects = await getProjects();
+    console.log(projects)
+    projects.forEach(project => {
+        let div = document.createElement('div')
+        let div1 = document.createElement('div')
+        let div2 = document.createElement('div')
+        let div3 = document.createElement('div')
+        let div4 = document.createElement('div')
+        let div5 = document.createElement('div')
+        let div6 = document.createElement('div')
+        let div7 = document.createElement('div')
+        let div8 = document.createElement('div')
+        var selectList = document.createElement("select");
+        var selectList1 = document.createElement("select");
+        var selectList2 = document.createElement("select");
+        var selectList3 = document.createElement("select");
+        var selectList4 = document.createElement("select");
+        var selectList5 = document.createElement("select");
+        var selectList6 = document.createElement("select");
+        let titleProject = document.createElement('p')
+        let duebyProject = document.createElement('p')
+        duebyProject.setAttribute('id', 'title')
+        console.log(project.date)
+        duebyProject.innerHTML = project.dueBy
+        titleProject.setAttribute('id', 'title')
+        titleProject.innerHTML = project.title
+        for (var i = 0; i < checkList.length; i++) {
+            var option = document.createElement("option")
+            option.value = checkList[i]
+            option.text = checkList[i]
+            console.log(project.briefStatus)
+            if (option.text == project.briefStatus) {
+                option.selected = true;
+            }
+            selectList.appendChild(option)
+        }
+        for (var i = 0; i < checkList.length; i++) {
+            var option1 = document.createElement("option")
+            option1.value = checkList[i]
+            option1.text = checkList[i]
+            if (option1.text == project.researchStatus) {
+                option1.selected = true;
+            }
+            selectList1.appendChild(option1)
+        }
+        for (var i = 0; i < checkList.length; i++) {
+            var option2 = document.createElement("option")
+            option2.value = checkList[i]
+            option2.text = checkList[i]
+            if (option2.text == project.conceptStatus) {
+                option2.selected = true;
+            }
+            selectList2.appendChild(option2)
+        }
+        for (var i = 0; i < checkList.length; i++) {
+            var option3 = document.createElement("option")
+            option3.value = checkList[i]
+            option3.text = checkList[i]
+            if (option3.text == project.designStatus) {
+                option3.selected = true;
+            }
+            selectList3.appendChild(option3)
+        }
+        for (var i = 0; i < checkList.length; i++) {
+            var option4 = document.createElement("option")
+            option4.value = checkList[i]
+            option4.text = checkList[i]
+            if (option4.text == project.mockupStatus) {
+                option4.selected = true;
+            }
+            selectList4.appendChild(option4)
+        }
+        for (var i = 0; i < checkList1.length; i++) {
+            var option5 = document.createElement("option")
+            option5.value = checkList1[i]
+            option5.text = checkList1[i]
+            if (option5.text == project.progress) {
+                option5.selected = true;
+            }
+            selectList5.appendChild(option5)
+        }
+        for (var i = 0; i < checkList2.length; i++) {
+            var option6 = document.createElement("option")
+            option6.value = checkList2[i]
+            option6.text = checkList2[i]
+            if (option6.text == project.priority) {
+                option6.selected = true;
+            }
+            selectList6.appendChild(option6)
+        }
 
 
 
-setup();
+
+        div.appendChild(titleProject)
+        div1.appendChild(duebyProject)
+        div2.appendChild(selectList)
+        div3.appendChild(selectList1)
+        div4.appendChild(selectList2)
+        div5.appendChild(selectList3)
+        div6.appendChild(selectList4)
+        div7.appendChild(selectList5)
+        div8.appendChild(selectList6)
+        container.appendChild(div)
+        container.appendChild(div1)
+        container.appendChild(div2)
+        container.appendChild(div3)
+        container.appendChild(div4)
+        container.appendChild(div5)
+        container.appendChild(div6)
+        container.appendChild(div7)
+        container.appendChild(div8)
+
+    })
+    
+}
+
+setup()
