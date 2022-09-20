@@ -104,6 +104,9 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             let div6 = document.createElement('div')
             let div7 = document.createElement('div')
             let div8 = document.createElement('div')
+            let div9 = document.createElement('div')
+            let div10 = document.createElement('div')
+            let div11 = document.createElement('div')
             var selectList = document.createElement("select");
             var selectList1 = document.createElement("select");
             var selectList2 = document.createElement("select");
@@ -113,8 +116,15 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             var selectList6 = document.createElement("select");
             let titleProject = document.createElement('p')
             let duebyProject = document.createElement('p')
+            let ownerProject = document.createElement('p')
+            let buttonSave = document.createElement('button')
+            let buttonRemove = document.createElement('button')
+            buttonSave.setAttribute('id', project.id)
+            buttonSave.style.width = "150px";
+            buttonRemove.setAttribute('id', project.id)
+            buttonRemove.style.width = "150px";
+            ownerProject.setAttribute('class', 'title3')
             duebyProject.setAttribute('class', 'title2')
-            duebyProject.innerHTML = project.dueBy
             titleProject.setAttribute('class', 'title1')
             selectList.setAttribute('class', 'selectList')
             selectList1.setAttribute('class', 'selectList1')
@@ -123,7 +133,9 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             selectList4.setAttribute('class', 'selectList4')
             selectList5.setAttribute('class', 'selectList5')
             selectList6.setAttribute('class', 'selectList6')
+            duebyProject.innerHTML = project.dueBy
             titleProject.innerHTML = project.title
+            ownerProject.innerHTML = project.owner
             for (var i = 0; i < checkList.length; i++) {
                 var option = document.createElement("option")
                 option.value = checkList[i]
@@ -188,6 +200,8 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
                 }
                 selectList6.appendChild(option6)
             }
+            buttonSave.innerText = "Save Project"
+            buttonRemove.innerText = "Remove Project"
             div.appendChild(titleProject)
             div1.appendChild(duebyProject)
             div2.appendChild(selectList)
@@ -197,8 +211,12 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             div6.appendChild(selectList4)
             div7.appendChild(selectList5)
             div8.appendChild(selectList6)
+            div9.appendChild(buttonSave)
+            div10.appendChild(ownerProject)
+            div11.appendChild(buttonRemove)
             container.appendChild(div)
             container.appendChild(div1)
+            container.appendChild(div10)
             container.appendChild(div2)
             container.appendChild(div3)
             container.appendChild(div4)
@@ -206,6 +224,48 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             container.appendChild(div6)
             container.appendChild(div7)
             container.appendChild(div8)
+            container.appendChild(div9)
+            container.appendChild(div11)
+            buttonSave.addEventListener('click', e => {
+                console.log(buttonSave.id)
+                console.log(project.title)
+                var brief = selectList.options[selectList.selectedIndex].text;
+                var research = selectList1.options[selectList1.selectedIndex].text;
+                var concept = selectList2.options[selectList2.selectedIndex].text;
+                var design = selectList3.options[selectList3.selectedIndex].text;
+                var mockup = selectList4.options[selectList4.selectedIndex].text;
+                var progress = selectList5.options[selectList5.selectedIndex].text;
+                var priority = selectList6.options[selectList6.selectedIndex].text;
+                var projectId = buttonSave.id
+                updateProject(projectId, brief, concept, progress, priority, mockup, design, research)
+            })
+            buttonRemove.addEventListener('click', e => {
+                var log = removeProject(buttonRemove.id);
+                console.log(log)
+                console.log(project.title)
+                var brief = selectList.options[selectList.selectedIndex].text;
+                var research = selectList1.options[selectList1.selectedIndex].text;
+                var concept = selectList2.options[selectList2.selectedIndex].text;
+                var design = selectList3.options[selectList3.selectedIndex].text;
+                var mockup = selectList4.options[selectList4.selectedIndex].text;
+                var progress = selectList5.options[selectList5.selectedIndex].text;
+                var priority = selectList6.options[selectList6.selectedIndex].text;
+                var projectId = buttonSave.id
+                div.remove();
+                div1.remove();
+                div2.remove();
+                div3.remove();
+                div4.remove();
+                div5.remove();
+                div6.remove();
+                div7.remove();
+                div8.remove();
+                div9.remove();
+                div10.remove();
+                div11.remove();
+            }
+            )
+
             var g = document.getElementById("container1").querySelectorAll("div")
             for (i = 0; i < g.length; i++) {
                 g[i].setAttribute("class", "projectDiv")
@@ -378,7 +438,8 @@ async function setup() {
             updateProject(projectId, brief, concept, progress, priority, mockup, design, research)
         })
         buttonRemove.addEventListener('click', e => {
-            console.log(buttonSave.id)
+            var log =  removeProject(buttonRemove.id);
+            console.log(log)
             console.log(project.title)
             var brief = selectList.options[selectList.selectedIndex].text;
             var research = selectList1.options[selectList1.selectedIndex].text;
@@ -388,11 +449,20 @@ async function setup() {
             var progress = selectList5.options[selectList5.selectedIndex].text;
             var priority = selectList6.options[selectList6.selectedIndex].text;
             var projectId = buttonSave.id
-            removeProject(projectId)
-        })
-        
-
-        
+            div.remove();
+            div1.remove();
+            div2.remove();
+            div3.remove();
+            div4.remove();
+            div5.remove();
+            div6.remove();
+            div7.remove();
+            div8.remove();
+            div9.remove();
+            div10.remove();
+            div11.remove();
+            }  
+        ) 
     })
     var g = document.getElementById("container1").querySelectorAll("div")
     for (i = 0; i < g.length; i++) {
@@ -427,20 +497,21 @@ async function updateProject(projectId, brief, concept, progress, priority, mock
 }
 
 async function removeProject(projectId) {
-    var response = await fetch("/api/projects", {
+    var response = await fetch("/api/projects/" + projectId, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-            Id: projectId
-        })
     })
     if (response.ok) {
         var info = await response.json()
         console.log(info)
+        localStorage.setItem('flag', 'true')
+        return info.status;
     }
     else {
-        await removeProject()
+        await removeProject(projectId)
     }
+
 }
 
+localStorage.removeItem('flag')
 setup()

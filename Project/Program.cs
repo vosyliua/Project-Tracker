@@ -110,5 +110,21 @@ app.MapPut("/api/projects",  async (ProjectModel projectData, ApplicationContext
 
 });
 
+app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db) =>
+{
+    ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Id == id);
+    if(project == null)
+    {
+        return Results.Conflict(new { message = "Project not found" });
+
+    }
+    else
+    {
+        db.Projects.Remove(project);
+        await db.SaveChangesAsync();
+        return Results.Ok(project);
+    }
+});
+
 
 app.Run();
