@@ -42,7 +42,6 @@
         }
         #concept {
             width: 150px;
-            #brief
         }
         #research {
             width: 150px;
@@ -62,47 +61,132 @@
             grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 11%;
             left: 130px;
             column-gap: 1rem;
+            top: 40%;
+            row-gap: 3ch;
+            font-size:1.5rem;
+        }
+        #containerLabels {
+            position: absolute;
+            display: grid;
+            grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 11%;
+            left: 130px;
+            column-gap: 1.2rem;
             top: 30%;
             row-gap: 3ch;
+            font-size: 2.1rem;
         }
-        .title1{
-            width:150px;
+
+        .title1 {
+            width: 150px;
+            font-size: 1.5rem;
+            word-wrap: break-word
         }
-        .title2{
-            width:150px;
+        .title2 {
+            width: 150px;
+            font-size: 1.5rem
         }
         .selectList {
             width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
         }
         .selectList1 {
             width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
         }
         .selectList2 {
             width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+
         }
         .selectList3 {
             width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
         }
         .selectList4 {
             width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
         }
-        .selectList5{
-            width:150px;
+        .selectList5 {
+            width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
         }
         .selectList6 {
             width: 150px;
+            min-width: 15ch;
+            max-width: 30ch;
+            border: 0.25px solid var(--select-border);
+            border-radius: 1em;
+            padding: 0.25em 0.5em;
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1.1;
+            background-color: #fff;
+            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
         }
         .projectDiv{
             display:flex;
             align-items:center;
-            justify-content:center;
-
+            justify-content:left;
 
         }
 
     </style>
 </head>
-<body>
+<body style="overflow-x: hidden">
     <h2 id="mainTitle">Project Tracking</h2>
     <form class="wrapper" name="projectForm">
         <div>
@@ -183,6 +267,38 @@
     <div id="container1">
 
     </div>
+    <div id="containerLabels">
+        <div>
+            <label for="title">Project Title</label>
+        </div>
+        <div>
+            <label for="title">Due By</label>
+        </div>
+        <div>
+            <label for="title">Brief Status</label>
+        </div>
+        <div>
+            <label for="title">Research Status</label>
+        </div>
+        <div>
+            <label for="title">Concept Status</label>
+        </div>
+        <div>
+            <label for="title">Design Status</label>
+        </div>
+        <div>
+            <label for="title">Mockup Status</label>
+        </div>
+        <div>
+            <label for="title">Progress</label>
+        </div>
+        <div>
+            <label for="title">Priority</label>
+        </div>
+    </div>
+
+
+
     <script type="text/javascript" src="projects.js?v=3"></script>
 
 
