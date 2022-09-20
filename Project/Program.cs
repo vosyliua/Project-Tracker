@@ -87,5 +87,28 @@ app.MapGet("/api/projects", async (ApplicationContext db) =>
     return Results.Ok(projects);
 });
 
+app.MapPut("/api/projects",  async (ProjectModel projectData, ApplicationContext db) =>
+{
+    ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Id == projectData.Id);
+    if (project == null)
+    {
+        return Results.Conflict(new { message = "Could not update project" + projectData.Title });
+    }
+    else
+    {
+        project.Priority = projectData.Priority;
+        project.DueBy = projectData.DueBy;
+        project.BriefStatus = projectData.BriefStatus;
+        project.ConceptStatus = projectData.ConceptStatus;
+        project.DesignStatus = projectData.DesignStatus;
+        project.MockupStatus = projectData.MockupStatus;
+        project.Progress = projectData.Progress;
+        project.ResearchStatus = projectData.ResearchStatus;
+        await db.SaveChangesAsync();
+        return Results.Json(project);
+    }
+
+});
+
 
 app.Run();
