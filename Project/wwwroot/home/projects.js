@@ -6,7 +6,6 @@ async function getProjects() {
     })
     if (response.ok) {
         var projects = await response.json();
-        console.log(projects)
         return projects
     }
     if (response.status = 500) {
@@ -22,7 +21,6 @@ document.getElementById('logout').addEventListener('click', e => {
     window.location = "https://localhost:7043/index"
 
 })
-console.log(document.getElementById('saveProject'))
 
 document.getElementById('saveProject').addEventListener('click', e => {
     e.preventDefault();
@@ -48,7 +46,6 @@ document.getElementById('saveProject').addEventListener('click', e => {
             + currentdate.getHours() + ":"
             + currentdate.getMinutes() + ":"
             + currentdate.getSeconds();
-        console.log(typeof (datetime))
     }
    
 })
@@ -443,16 +440,6 @@ async function setup() {
         })
         buttonRemove.addEventListener('click', e => {
             var log =  removeProject(buttonRemove.id);
-            console.log(log)
-            console.log(project.title)
-            var brief = selectList.options[selectList.selectedIndex].text;
-            var research = selectList1.options[selectList1.selectedIndex].text;
-            var concept = selectList2.options[selectList2.selectedIndex].text;
-            var design = selectList3.options[selectList3.selectedIndex].text;
-            var mockup = selectList4.options[selectList4.selectedIndex].text;
-            var progress = selectList5.options[selectList5.selectedIndex].text;
-            var priority = selectList6.options[selectList6.selectedIndex].text;
-            var projectId = buttonSave.id
             div.remove();
             div1.remove();
             div2.remove();
@@ -493,7 +480,6 @@ async function updateProject(projectId, brief, concept, progress, priority, mock
     })
     if (response.ok) {
         var info = await response.json()
-        console.log(info)
     }
     else {
         await updateProject()
@@ -507,7 +493,6 @@ async function removeProject(projectId) {
     })
     if (response.ok) {
         var info = await response.json()
-        console.log(info)
         localStorage.setItem('flag', 'true')
         return info.status;
     }

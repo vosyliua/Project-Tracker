@@ -12,8 +12,6 @@ document.getElementById('register').addEventListener('click', e => {
     const form = document.forms['userForm'];
     const usernameR = form.elements['username'].value;
     const passwordR = form.elements['password'].value;
-    console.log(usernameR)
-    console.log(passwordR)
     Register(usernameR, passwordR)
     form.elements['username'].value = "";
     form.elements['password'].value = "";
