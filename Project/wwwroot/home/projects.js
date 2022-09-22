@@ -53,10 +53,6 @@ document.getElementById('saveProject').addEventListener('click', e => {
    
 })
 
-async function getProjectId() {
-
-}
-
 
 async function addProject(projectName, owner, dueby, brief, research, concept, design, mockup, progress, priority) {
     if (projectName == null) {
@@ -266,6 +262,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             }
             )
 
+
             var g = document.getElementById("container1").querySelectorAll("div")
             for (i = 0; i < g.length; i++) {
                 g[i].setAttribute("class", "projectDiv")
@@ -283,6 +280,13 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
 
 
 async function setup() {
+    var user = localStorage.getItem('Username')
+    console.log(user)
+    if (user == null) {
+        document.getElementById('logout').innerText = "Login"
+    } else {
+        console.log("aaa")
+    }
     let checkList = ["Not Started", "In Progress", "Done"]
     let checkList1 = ["0%", "20%", "40%", "60%", "80%", "100%"]
     let checkList2 = ["1/5", "2/5", "3/5", "4/5", "5/5"]
@@ -315,9 +319,9 @@ async function setup() {
         let buttonSave = document.createElement('button')
         let buttonRemove = document.createElement('button')
         buttonSave.setAttribute('id', project.id)
-        buttonSave.style.width = "150px";
+        buttonSave.style.width = "90px";
         buttonRemove.setAttribute('id', project.id)
-        buttonRemove.style.width = "150px";
+        buttonRemove.style.width = "100px";
         ownerProject.setAttribute('class', 'title3')
         duebyProject.setAttribute('class', 'title2')
 
