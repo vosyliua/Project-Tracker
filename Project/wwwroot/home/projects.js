@@ -99,7 +99,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             document.forms['projectForm'].elements['dueby'].value = ""
             let project = await response.json()
             let checkList = ["Not Started", "In Progress", "Done"]
-            let checkList1 = ["0%", "20%", "40%", "60%", "80%", "100%"]
+            let checkList1 = ["0%", "20%", "40%", "60%", "80%", "100%"]                          //arrays, used to check which value to set the HTML elements to
             let checkList2 = ["1/5", "2/5", "3/5", "4/5", "5/5"]
             var container = document.getElementById('container1')
             let div = document.createElement('div')
@@ -129,7 +129,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             buttonSave.setAttribute('id', project.id)
             buttonRemove.setAttribute('id', project.id)
             ownerProject.setAttribute('class', 'title3')
-            duebyProject.setAttribute('class', 'title2')
+            duebyProject.setAttribute('class', 'title2')                                              //class attributes set for styling
             titleProject.setAttribute('class', 'title1')
             selectList.setAttribute('class', 'selectList')
             selectList1.setAttribute('class', 'selectList1')
@@ -169,7 +169,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
                 }
                 selectList2.appendChild(option2)
             }
-            for (var i = 0; i < checkList.length; i++) {
+            for (var i = 0; i < checkList.length; i++) {                                        // loops through arrays, adds all the values from arrays, and checks which one was selected
                 var option3 = document.createElement("option")
                 option3.value = checkList[i]
                 option3.text = checkList[i]
@@ -207,7 +207,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             }
             buttonSave.innerText = "Save Project"
             buttonRemove.innerText = "Remove Project"
-            buttonRemove.setAttribute('class', 'projectButtons')
+            buttonRemove.setAttribute('class', 'projectButtons')                                        //setting attributes, for styling
             buttonSave.setAttribute('class', 'projectButtons')
             div.appendChild(titleProject)
             div1.appendChild(duebyProject)
@@ -233,7 +233,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             container.appendChild(div8)
             container.appendChild(div9)
             container.appendChild(div11)
-            buttonSave.addEventListener('click', e => {                                         //event listener, which retrieves new information about project and updates it via PUT route
+            buttonSave.addEventListener('click', e => {                                         //event listener, which retrieves new information from input about project and updates the specific project via PUT route
                 var brief = selectList.options[selectList.selectedIndex].text;
                 var research = selectList1.options[selectList1.selectedIndex].text;
                 var concept = selectList2.options[selectList2.selectedIndex].text;
@@ -263,7 +263,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
 
 
             var g = document.getElementById("container1").querySelectorAll("div")
-            for (i = 0; i < g.length; i++) {
+            for (i = 0; i < g.length; i++) {                                                //setting attributes, for styling
                 g[i].setAttribute("class", "projectDiv")
             }
             alert("Your Project Has Been Created!")
@@ -292,7 +292,7 @@ async function setup() {                                                        
     }
 
     let checkList = ["Not Started", "In Progress", "Done"]
-    let checkList1 = ["0%", "20%", "40%", "60%", "80%", "100%"]
+    let checkList1 = ["0%", "20%", "40%", "60%", "80%", "100%"]                                         //arrays, which are used to determine the correct value of html select elements
     let checkList2 = ["1/5", "2/5", "3/5", "4/5", "5/5"]
     var container = document.getElementById('container1')
     var projects = await getProjects();
@@ -333,7 +333,7 @@ async function setup() {                                                        
                 titleProject.setAttribute('class', 'title1')
                 selectList.setAttribute('class', 'selectList')
                 selectList1.setAttribute('class', 'selectList1')
-                selectList2.setAttribute('class', 'selectList2')
+                selectList2.setAttribute('class', 'selectList2')                                        //setting attributes, for styling
                 selectList3.setAttribute('class', 'selectList3')
                 selectList4.setAttribute('class', 'selectList4')
                 selectList5.setAttribute('class', 'selectList5')
@@ -371,7 +371,7 @@ async function setup() {                                                        
                     selectList2.appendChild(option2)
                 }
                 for (var i = 0; i < checkList.length; i++) {
-                    var option3 = document.createElement("option")
+                    var option3 = document.createElement("option")                                           //loop through array of values, and select the one which was selected
                     option3.value = checkList[i]
                     option3.text = checkList[i]
                     if (option3.text == project.designStatus) {
@@ -413,21 +413,21 @@ async function setup() {                                                        
                 div2.appendChild(selectList)
                 div3.appendChild(selectList1)
                 div4.appendChild(selectList2)
-                div5.appendChild(selectList3)
+                div5.appendChild(selectList3)                                                           //appending child elements to parent divs
                 div6.appendChild(selectList4)
                 div7.appendChild(selectList5)
                 div8.appendChild(selectList6)
                 div9.appendChild(buttonSave)
                 div10.appendChild(ownerProject)
                 div11.appendChild(buttonRemove)
-                buttonRemove.setAttribute('class', 'projectButtons')
+                buttonRemove.setAttribute('class', 'projectButtons')                            
                 buttonSave.setAttribute('class', 'projectButtons')
                 container.appendChild(div)
                 container.appendChild(div1)
                 container.appendChild(div10)
                 container.appendChild(div2)
                 container.appendChild(div3)
-                container.appendChild(div4)
+                container.appendChild(div4)                                                             //appending child divs to main div
                 container.appendChild(div5)
                 container.appendChild(div6)
                 container.appendChild(div7)
@@ -510,8 +510,8 @@ async function removeProject(projectId) {                                       
         return info.status;
     }
     else {
-        await removeProject(projectId)
+        await removeProject(projectId)                                                                             //recursion, in case of database connection error
     }
 
 }
-setup()
+setup()                                                                                                         //calling Main function
