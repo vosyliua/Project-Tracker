@@ -3,190 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <title>Web API1</title>
-    <style>
-        .wrapper {
-            position:absolute;
-            display: grid;
-            grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
-            left:130px;
-            column-gap: 1rem;
-            top:12%;
-        }
-        .form-label22{
-            font-size:20px;
-           
-        }
-        #saveProject {
-            position:absolute;
-            bottom:75%;
-
-            font-size:30px;
-            width:100%;
-        }
-        #logout{
-            position:absolute;
-            font-size:20px;
-            right:1%;
-            top:2%;
-        }
-        #mainTitle{
-            position:absolute;
-            left:45%;
-            font-size:35px;
-        }
-        #brief{
-            width:150px;
-        }
-        #dueby {
-            width: 150px;
-        }
-        #concept {
-            width: 150px;
-        }
-        #research {
-            width: 150px;
-        }
-        #priority {
-            width: 150px;
-        }
-        #progress {
-            width: 150px;
-        }
-        #mockup {
-            width: 150px;
-        }
-        #container1 {
-            position: absolute;
-            display: grid;
-            grid-template-columns: 6% 6% 2% 7% 6% 6% 6% 6% 6% 6% 3% 3%;
-            left: 50px;
-            column-gap: 2.6rem;
-            top: 40%;
-            row-gap: 3ch;
-            font-size: 1.5rem;
-        }
-        #containerLabels {
-            position: absolute;
-            display: grid;
-            grid-template-columns: 6% 6% 4% 7% 6% 6% 7% 6% 6% 6% 6%;
-            left: 50px;
-            column-gap: 3.3rem;
-            top: 30%;
-            row-gap: 3ch;
-            font-size: 2.1rem;
-        }
-
-        .title1 {
-            width: 150px;
-            font-size: 1.5rem;
-            word-wrap: break-word
-        }
-        .title2 {
-            width: 150px;
-            font-size: 1.5rem
-        }
-        .selectList {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-        }
-        .selectList1 {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-        }
-        .selectList2 {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-
-        }
-        .selectList3 {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-        }
-        .selectList4 {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-        }
-        .selectList5 {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-        }
-        .selectList6 {
-            width: 150px;
-            min-width: 15ch;
-            max-width: 30ch;
-            border: 0.25px solid var(--select-border);
-            border-radius: 1em;
-            padding: 0.25em 0.5em;
-            font-size: 1.25rem;
-            cursor: pointer;
-            line-height: 1.1;
-            background-color: #fff;
-            background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
-        }
-        .projectDiv{
-            display:flex;
-            align-items:center;
-            justify-content:left;
-
-        }
-
-    </style>
+    <link type="text/css" rel="stylesheet" href="https://localhost:7043/index/style/main.css">
 </head>
-<body style="overflow-x: hidden">
+<body >
+    <h2 id="userH2"></h2>
     <h2 id="mainTitle">Project Tracking</h2>
     <form class="wrapper" name="projectForm">
         <div>
@@ -261,7 +81,7 @@
 
     </form>
 
-    <button type="submit" id="saveProject"> Save</button>
+    <button type="submit" id="saveProject"> Add Project</button>
     <button type="submit" id="logout"> Logout</button>
 
     <div id="container1">
@@ -297,6 +117,12 @@
         </div>
         <div>
             <label for="title">Priority</label>
+        </div>
+        <div>
+            <p></p>
+        </div>
+        <div>
+            <p></p>
         </div>
     </div>
 

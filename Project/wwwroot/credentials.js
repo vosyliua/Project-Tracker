@@ -1,4 +1,5 @@
 ﻿localStorage.clear()
+
 document.getElementById('login').addEventListener('click', e => {
     e.preventDefault();
     const form = document.forms['userForm'];
@@ -24,15 +25,12 @@ document.getElementById('register').addEventListener('click', e => {
 async function Login(username, password) {
     localStorage.clear()
     const token = 'Basic ' + btoa(`${username}:${password}`)
+    console.log(token)
     if (username.length >= 6) {
         if (password.length >= 6) {
             const response = await fetch("/api/users", {
-                method: 'POST',
+                method: 'GET',
                 headers: { "Accept": "application/json", "Content-Type": "application/json", 'Authorization': token },
-                body: JSON.stringify({
-                    Username: username,
-                    Password: password
-                })
             })
             if (response.ok === true) {
                 console.log("found in db")
@@ -42,9 +40,11 @@ async function Login(username, password) {
 
 
             }
-            else {
-                console.log(response.status)
-                console.log("not found" + username + " " + password)
+            if (response.status == 500) {
+               await Login(username, password)
+            }
+            if(response.status == 401) {
+                alert("Invalid Username Or Password")
             }
 
         }
@@ -67,21 +67,20 @@ async function Register(usernameR, passwordR) {
                     Password: passwordR
                 })
             })
-            if (response.ok === true) {
-                console.log("User registered")
-                console.log(await response.json())
+            if (response.status == 200) {
+                alert("Account Successfuly Registered")
             }
-            else {
-                console.log(await response.json())
-                console.log("Not registered")
-                console.log(await response.json())
+            if (response.status == 500) {
+                await Register(usernameR, passwordR)
+            }
+            if(response.status == 409) {
+                alert("Username Already Exists")
             }
         }
-    } else {
+    }
+    else {
         alert("Password and Username need to be greater than 6 symbols in lenght")
     }
-    
-
 }
 
 

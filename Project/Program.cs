@@ -20,44 +20,46 @@ app.UseFileServer(new FileServerOptions
 
 
 
-app.MapPost("/api/users", async ( Account accountData, ApplicationContext db , HttpContext context) =>
+app.MapGet("/api/users", async ( ApplicationContext db , HttpContext context) =>
 {
+    var authToken1 = context.Request.Headers["Username"].ToString();
+    var authToken2 = context.Request.Headers["Password"].ToString();
 
-    Account? account = await  db.Accounts.FirstOrDefaultAsync(x=> x.Username == accountData.Username);
+    Account? account = await  db.Accounts.FirstOrDefaultAsync(x=> x.Username == authToken1);
     if(account != null)
     {
-        if (Crypto.VerifyHashedPassword(account.Password, accountData.Password) == true)
+        if (Crypto.VerifyHashedPassword(account.Password, authToken2) == true)
         {
             return Results.Ok(account);
 
         }
         else
         {
-            return Results.NotFound(new { message = "Account not found" });
+            return Results.Unauthorized();
         }
     }
     else
     {
-        return Results.NotFound(new { message = "Account not found" });
+        return Results.Unauthorized();
     }
     
 });
 
-app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db) =>
+app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db, HttpContext context) =>
 {
     var passwordHash = Crypto.HashPassword(accountData.Password);
-    Console.WriteLine(passwordHash);
     Account? account = await db.Accounts.FirstOrDefaultAsync(x => x.Username == accountData.Username);
-    accountData.Password = passwordHash;
+    
     if (account == null)
-    {   
+    {
+        accountData.Password = passwordHash;
         await db.Accounts.AddAsync(accountData);
         await db.SaveChangesAsync();
-        return Results.Ok(new { message = "Account Created with username" + accountData.Username });
+        return Results.Ok();
     }
     else
     {
-        return Results.NotFound("Account already exists " + accountData.Username);
+        return Results.Conflict();
     }
 });
 
@@ -117,12 +119,13 @@ app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =
 {
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
-    Console.WriteLine(authToken1 + "  " + authToken2);
+    var authToken3 = context.Request.Headers["Path"].ToString();
+    Console.WriteLine(authToken3);
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
     Console.WriteLine(auth.Password + " from db query");
     if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)
     {
-        Console.WriteLine(authToken1 + "  " + authToken2);
+        Console.WriteLine(authToken3);
         var projects = await db.Projects.ToListAsync();
         return Results.Ok(projects);
     }

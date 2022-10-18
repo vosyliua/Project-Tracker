@@ -16,6 +16,7 @@ public class AuthenticationMiddleware
         if (context.Request.Path == "/api/usersR")
         {
             await _next(context);
+            return;
         }
         string authHeader = context.Request.Headers["Authorization"];
         if (authHeader != null && authHeader.StartsWith("Basic"))
