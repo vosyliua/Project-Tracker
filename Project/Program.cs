@@ -4,10 +4,10 @@ using System;
 using Microsoft.Extensions.FileProviders;
 using System.Web.Helpers;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); //create a builder, which registers services, like the creation of a database
 string connection = "Server=(localdb)\\mssqllocaldb; Database=project; Trusted_Connection=True; MultipleActiveResultSets=True";
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
-builder.Services.AddDirectoryBrowser();
+builder.Services.AddDirectoryBrowser(); // allows us to browse the dirrectory
 var app = builder.Build();
 
 app.UseFileServer(new FileServerOptions
@@ -16,41 +16,41 @@ app.UseFileServer(new FileServerOptions
            Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
     RequestPath = "/index",
     EnableDirectoryBrowsing = true
-});
+}); // Allows to use files from the local machine
 
 
 
-app.MapGet("/api/users", async ( ApplicationContext db , HttpContext context) =>
+app.MapGet("/api/users", async ( ApplicationContext db , HttpContext context) => //Get route to retrieve a specific user
 {
-    var authToken1 = context.Request.Headers["Username"].ToString();
+    var authToken1 = context.Request.Headers["Username"].ToString();            // Header tokens, which are used to check if user exists in the database
     var authToken2 = context.Request.Headers["Password"].ToString();
 
     Account? account = await  db.Accounts.FirstOrDefaultAsync(x=> x.Username == authToken1);
     if(account != null)
     {
-        if (Crypto.VerifyHashedPassword(account.Password, authToken2) == true)
+        if (Crypto.VerifyHashedPassword(account.Password, authToken2) == true)  //Compares non-hashed password with hashed password, and returns if they match
         {
             return Results.Ok(account);
 
         }
         else
         {
-            return Results.Unauthorized();
+            return Results.Unauthorized();                                      // returns unauthorized status code 409, if the password don't match
         }
     }
     else
     {
-        return Results.Unauthorized();
+        return Results.Unauthorized();                                          // returns unauthorized status code 409, if the username wasn't found in the database.
     }
     
 });
 
-app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db, HttpContext context) =>
+app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db, HttpContext context) =>       //POST route, which registers a user
 {
     var passwordHash = Crypto.HashPassword(accountData.Password);
-    Account? account = await db.Accounts.FirstOrDefaultAsync(x => x.Username == accountData.Username);
+    Account? account = await db.Accounts.FirstOrDefaultAsync(x => x.Username == accountData.Username);      //Checks if user already in database
     
-    if (account == null)
+    if (account == null)                                                                                    //If user doesn't exist, hashes password and stores data
     {
         accountData.Password = passwordHash;
         await db.Accounts.AddAsync(accountData);
@@ -64,13 +64,13 @@ app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db, Ht
 });
 
 
-app.MapGet("/api/usersall", async (ApplicationContext db, HttpContext context) =>
+app.MapGet("/api/usersall", async (ApplicationContext db, HttpContext context) =>                           //route that returns all the users
 
 {
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
-    if(auth!= null & Crypto.VerifyHashedPassword(auth.Password,  authToken2) == true)
+    if(auth!= null & Crypto.VerifyHashedPassword(auth.Password,  authToken2) == true)                       // verifying credentials
     {
         var people = await db.Accounts.ToListAsync();
         return Results.Ok(people);
@@ -85,14 +85,14 @@ app.MapGet("/api/usersall", async (ApplicationContext db, HttpContext context) =
 });
 
 
-app.MapPost("/api/projects", async (ProjectModel projectData, ApplicationContext db, HttpContext context) =>
+app.MapPost("/api/projects", async (ProjectModel projectData, ApplicationContext db, HttpContext context) =>     // route to add a project 
 {
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
-    if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)
+    if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)                          // verifying credentials
     {
-        ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Title == projectData.Title);
+        ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Title == projectData.Title);       //checks if project already exists in the database
         if (project == null)
         {
             await db.Projects.AddAsync(projectData);
@@ -115,7 +115,7 @@ app.MapPost("/api/projects", async (ProjectModel projectData, ApplicationContext
 });
 
 
-app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =>
+app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =>       //Retrieves all of the projects in the database
 {
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
@@ -123,10 +123,10 @@ app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =
     Console.WriteLine(authToken3);
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
     Console.WriteLine(auth.Password + " from db query");
-    if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)
+    if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)      //credential authorization
     {
         Console.WriteLine(authToken3);
-        var projects = await db.Projects.ToListAsync();
+        var projects = await db.Projects.ToListAsync();                                     //returns all projects
         return Results.Ok(projects);
     }
     else
@@ -136,21 +136,21 @@ app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =
         
 });
 
-app.MapPut("/api/projects",  async (ProjectModel projectData, ApplicationContext db, HttpContext context) =>
+app.MapPut("/api/projects",  async (ProjectModel projectData, ApplicationContext db, HttpContext context) =>    //route to update an existing project
 {
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
-    if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)
+    if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)                          //checks credentials
     {
-        ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Id == projectData.Id);
+        ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Id == projectData.Id);             //checks if project exists
         if (project == null)
         {
             return Results.Conflict(new { message = "Could not update project" + projectData.Title });
         }
         else
         {
-            project.Priority = projectData.Priority;
+            project.Priority = projectData.Priority;                                                            //updates the existing project with new data
             project.DueBy = projectData.DueBy;
             project.BriefStatus = projectData.BriefStatus;
             project.ConceptStatus = projectData.ConceptStatus;
@@ -171,14 +171,14 @@ app.MapPut("/api/projects",  async (ProjectModel projectData, ApplicationContext
 
 });
 
-app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, HttpContext context) =>
+app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, HttpContext context) =>          //route to delete a specific project
 {
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
-    Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
+    Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);                       //verify credentials
     if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)
     {
-        ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Id == id);
+        ProjectModel? project = await db.Projects.FirstOrDefaultAsync(x => x.Id == id);                         //checks for project
         if (project == null)
         {
             return Results.Conflict(new { message = "Project not found" });
@@ -186,7 +186,7 @@ app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, H
         }
         else
         {
-            db.Projects.Remove(project);
+            db.Projects.Remove(project);                                                                        //removes project if found
             await db.SaveChangesAsync();
             return Results.Ok(project);
         }
@@ -198,5 +198,5 @@ app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, H
         
 });
 
-app.UseMiddleware<AuthenticationMiddleware>();
+app.UseMiddleware<AuthenticationMiddleware>();                                                                  //uses authorization middleware, which extracts a token from the headers off httprequest
 app.Run();

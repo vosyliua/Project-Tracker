@@ -5,7 +5,7 @@ namespace Project
 {
     public class Account
     {
-        [Key]
+        [Key]    //Account model, which is used to create Account objects                                                               
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Username { get; set; } = "";

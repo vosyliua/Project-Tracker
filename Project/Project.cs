@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Project
 {
-    public class ProjectModel
+    public class ProjectModel  // Creates Project Objects with these attributes
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
