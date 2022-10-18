@@ -1,4 +1,5 @@
-﻿document.getElementById('login').addEventListener('click', e => {
+﻿localStorage.clear()
+document.getElementById('login').addEventListener('click', e => {
     e.preventDefault();
     const form = document.forms['userForm'];
     const username = form.elements['username'].value;
@@ -21,13 +22,13 @@ document.getElementById('register').addEventListener('click', e => {
 
 
 async function Login(username, password) {
-    console.log(username.length)
-    
+    localStorage.clear()
+    const token = 'Basic ' + btoa(`${username}:${password}`)
     if (username.length >= 6) {
         if (password.length >= 6) {
             const response = await fetch("/api/users", {
                 method: 'POST',
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                headers: { "Accept": "application/json", "Content-Type": "application/json", 'Authorization': token },
                 body: JSON.stringify({
                     Username: username,
                     Password: password
@@ -35,13 +36,15 @@ async function Login(username, password) {
             })
             if (response.ok === true) {
                 console.log("found in db")
+                window.location = "https://localhost:7043/index/home/projects.html"
+                localStorage.setItem('authorization', token)
                 localStorage.setItem('Username', username)
-                window.location ="https://localhost:7043/index/home/projects.html"
 
 
             }
             else {
-                console.log("not found")
+                console.log(response.status)
+                console.log("not found" + username + " " + password)
             }
 
         }

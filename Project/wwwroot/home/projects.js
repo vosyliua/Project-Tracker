@@ -1,23 +1,24 @@
-﻿console.log(document.getElementById('container1'))
+﻿
 async function getProjects() {
+    const token = localStorage.getItem('authorization')
     const response = await fetch("/api/projects", {
         method: 'GET',
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Accept': 'application/json', 'Authorization': token }
     })
     if (response.ok) {
         var projects = await response.json();
         return projects
-    }
-    if (response.status = 500) {
-        var projects1 = await getProjects()
-        return projects1
+    } if (response.status == 500) {
+
+        await getProjects()
+        return projects
     }
 }
 
 
 
 document.getElementById('logout').addEventListener('click', e => {
-    localStorage.removeItem('Username')
+    localStorage.clear()
     window.location = "https://localhost:7043/index"
 
 })
@@ -65,7 +66,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             + currentdate.getSeconds();
         const response = await fetch("/api/projects", {
             method: 'POST',
-            headers: { "Accept": "application/json", "Content-Type": "application/json" },
+            headers: { "Accept": "application/json", "Content-Type": "application/json", 'Authorization': localStorage.getItem('authorization') },
             body: JSON.stringify({
                 Date: datetime,
                 Title: projectName,
@@ -220,8 +221,6 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             container.appendChild(div9)
             container.appendChild(div11)
             buttonSave.addEventListener('click', e => {
-                console.log(buttonSave.id)
-                console.log(project.title)
                 var brief = selectList.options[selectList.selectedIndex].text;
                 var research = selectList1.options[selectList1.selectedIndex].text;
                 var concept = selectList2.options[selectList2.selectedIndex].text;
@@ -233,17 +232,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
                 updateProject(projectId, brief, concept, progress, priority, mockup, design, research)
             })
             buttonRemove.addEventListener('click', e => {
-                var log = removeProject(buttonRemove.id);
-                console.log(log)
-                console.log(project.title)
-                var brief = selectList.options[selectList.selectedIndex].text;
-                var research = selectList1.options[selectList1.selectedIndex].text;
-                var concept = selectList2.options[selectList2.selectedIndex].text;
-                var design = selectList3.options[selectList3.selectedIndex].text;
-                var mockup = selectList4.options[selectList4.selectedIndex].text;
-                var progress = selectList5.options[selectList5.selectedIndex].text;
-                var priority = selectList6.options[selectList6.selectedIndex].text;
-                var projectId = buttonSave.id
+                removeProject(buttonRemove.id);
                 div.remove();
                 div1.remove();
                 div2.remove();
@@ -267,7 +256,7 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
             alert("Your Project Has Been Created!")
         } else {
             if (response.status = 500) {
-                await addProject(projectName, owner, dueby, brief, research, concept, design, mockup, progress, priority)
+                Alert("Please Retry Adding The Project")
             }
         }
 
@@ -289,7 +278,6 @@ async function setup() {
     let checkList2 = ["1/5", "2/5", "3/5", "4/5", "5/5"]
     var container = document.getElementById('container1')
     var projects = await getProjects();
-    console.log(projects)
     projects.forEach(project => {
         let div = document.createElement('div')
         let div1 = document.createElement('div')
@@ -466,7 +454,7 @@ async function setup() {
 async function updateProject(projectId, brief, concept, progress, priority, mockup, design, research) {
     var response = await fetch("/api/projects", {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': localStorage.getItem('authorization') },
         body: JSON.stringify({
             Id: projectId,
             BriefStatus: brief,
@@ -489,7 +477,7 @@ async function updateProject(projectId, brief, concept, progress, priority, mock
 async function removeProject(projectId) {
     var response = await fetch("/api/projects/" + projectId, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': localStorage.getItem('authorization') },
     })
     if (response.ok) {
         var info = await response.json()
