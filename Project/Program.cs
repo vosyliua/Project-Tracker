@@ -57,7 +57,7 @@ app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db, Ht
             accountData.Password = passwordHash;
             await db.Accounts.AddAsync(accountData);
             await db.SaveChangesAsync();
-            return Results.Ok();
+            return Results.Ok("Account created!");
         }
         else
         {
@@ -105,12 +105,12 @@ app.MapPost("/api/projects", async (ProjectModel projectData, ApplicationContext
         {
             await db.Projects.AddAsync(projectData);
             await db.SaveChangesAsync();
-            return Results.Ok(projectData);
+            return Results.Ok(project);
 
         }
         else
         {
-            return Results.Conflict(new { message = "Could not add project" + projectData.Title });
+            return Results.Conflict(new { message = "Could not add project " + projectData.Title });
         }
     }
     else
@@ -131,7 +131,6 @@ app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
     if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)      //credential authorization
     {
-        Console.WriteLine(authToken3);
         var projects = await db.Projects.ToListAsync();                                     //returns all projects
         return Results.Ok(projects);
     }
@@ -165,16 +164,13 @@ app.MapPut("/api/projects",  async (ProjectModel projectData, ApplicationContext
             project.Progress = projectData.Progress;
             project.ResearchStatus = projectData.ResearchStatus;
             await db.SaveChangesAsync();
-            return Results.Json(project);
+            return Results.Json("Updated!");
         }
     }
     else
     {
         return Results.Unauthorized();
     };
-       
-    
-
 });
 
 app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, HttpContext context) =>          //route to delete a specific project
@@ -192,9 +188,17 @@ app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, H
         }
         else
         {
-            db.Projects.Remove(project);                                                                        //removes project if found
-            await db.SaveChangesAsync();
-            return Results.Ok(project);
+            if(project.Owner == authToken1)
+            {
+                db.Projects.Remove(project);                                                                        //removes project if found
+                await db.SaveChangesAsync();
+                return Results.Ok(project.Title + " Deleted!");
+            }
+            else
+            {
+                return Results.Unauthorized();
+            }
+           
         }
     }
     else
@@ -203,6 +207,8 @@ app.MapDelete("/api/projects/{id:int}", async (int id , ApplicationContext db, H
     }
         
 });
+
+
 
 app.UseMiddleware<AuthenticationMiddleware>();                                                                  //uses authorization middleware, which extracts a token from the headers off httprequest
 app.Run();

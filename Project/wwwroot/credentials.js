@@ -1,5 +1,4 @@
 ﻿localStorage.clear()                                                                            //ensures the localstorage is cleared
-localStorage.setItem('counter', 0)
 document.getElementById('login').addEventListener('click', e => {                              //event listener for the login a user functionality
     e.preventDefault();
     const form = document.forms['userForm'];
