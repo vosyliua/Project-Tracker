@@ -254,8 +254,6 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
                 div11.remove();
             }
             )
-
-
             var g = document.getElementById("container1").querySelectorAll("div")
             for (i = 0; i < g.length; i++) {                                                //setting attributes, for styling
                 g[i].setAttribute("class", "projectDiv")
@@ -469,11 +467,8 @@ async function setup() {                                                        
             for (i = 0; i < g.length; i++) {                                                            //sets a class for html elements to later apply styling
                 g[i].setAttribute("class", "projectDiv")
             }
-
         }
-       
     }
-    
 }
 
 
@@ -511,10 +506,7 @@ async function removeProject(projectId) {                                       
         var info = await response.json()                                                                  
         return info.status;
     }
-    if (repsonse.status == 500) {
-        
-                                                                                                                //recursion, in case of database connection error
+    if (repsonse.status == 500) {                                                                                                       //recursion, in case of database connection error
     }
-
 }
                                                                                                 
