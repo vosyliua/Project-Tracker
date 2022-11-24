@@ -128,9 +128,7 @@ app.MapGet("/api/projects", async (ApplicationContext db, HttpContext context) =
     var authToken1 = context.Request.Headers["Username"].ToString();
     var authToken2 = context.Request.Headers["Password"].ToString();
     var authToken3 = context.Request.Headers["Path"].ToString();
-    Console.WriteLine(authToken3);
     Account? auth = await db.Accounts.FirstOrDefaultAsync(x => x.Username == authToken1);
-    Console.WriteLine(auth.Password + " from db query");
     if (auth != null & Crypto.VerifyHashedPassword(auth.Password, authToken2) == true)      //credential authorization
     {
         Console.WriteLine(authToken3);
