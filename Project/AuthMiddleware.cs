@@ -35,7 +35,6 @@ public class AuthenticationMiddleware
                 {
                     context.Request.Headers["Username"] = username;                                     //sets custom headers to the credentials, which are used in later routes for authorization
                     context.Request.Headers["Password"] = password;
-                    context.Request.Headers["Path"] = context.Request.GetEncodedUrl();
                     await _next(context);
 
                 }

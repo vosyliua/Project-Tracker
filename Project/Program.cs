@@ -52,10 +52,18 @@ app.MapPost("/api/usersR", async (Account accountData, ApplicationContext db, Ht
     
     if (account == null)                                                                                    //If user doesn't exist, hashes password and stores data
     {
-        accountData.Password = passwordHash;
-        await db.Accounts.AddAsync(accountData);
-        await db.SaveChangesAsync();
-        return Results.Ok();
+        if(accountData.Password.Length >= 5 && accountData.Username.Length >= 5)                            //checks if the input is at least 5 characters long
+        {
+            accountData.Password = passwordHash;
+            await db.Accounts.AddAsync(accountData);
+            await db.SaveChangesAsync();
+            return Results.Ok();
+        }
+        else
+        {
+            return Results.Conflict();
+        }
+
     }
     else
     {

@@ -1,5 +1,5 @@
 ﻿localStorage.clear()                                                                            //ensures the localstorage is cleared
-
+localStorage.setItem('counter', 0)
 document.getElementById('login').addEventListener('click', e => {                              //event listener for the login a user functionality
     e.preventDefault();
     const form = document.forms['userForm'];
@@ -24,16 +24,14 @@ document.getElementById('register').addEventListener('click', e => {            
 
 async function Login(username, password) {                                                      //login function 
     localStorage.clear()
-    const token = 'Basic ' + btoa(`${username}:${password}`)                                    // creates a token, which is used for the auth header
-    console.log(token)
-    if (username.length >= 6) {
-        if (password.length >= 6) {
+    if (username.length >= 5) {
+        if (password.length >= 5) {
+            const token = 'Basic ' + btoa(`${username}:${password}`)                                    // creates a token, which is used for the auth header
             const response = await fetch("/api/users", {
                 method: 'GET',
                 headers: { "Accept": "application/json", "Content-Type": "application/json", 'Authorization': token },
             })
             if (response.ok === true) {
-                console.log("found in db")
                 window.location = "https://localhost:7043/index/home/projects.html"             //relocates to new static html file, sets two localstorage items
                 localStorage.setItem('authorization', token)
                 localStorage.setItem('Username', username)
@@ -55,10 +53,21 @@ async function Login(username, password) {                                      
 
 }
 
-async function Register(usernameR, passwordR) {                                                 //user registration function
-    if (usernameR.length >= 6) {
-        if (passwordR.length >= 6) {
-            console.log(usernameR + "in func")
+async function Register(usernameR, passwordR) {
+    var flag = true;
+    if (usernameR.length >= 5) {
+        if (passwordR.length >= 5) {
+            const checks = ["`", "£", "@", "!", "^", "*", "(", ")", "#", "'", ",", ".", "?", "<", ">", "=", "+", "-", "_", "%",'"',"&"]
+            checks.forEach(symbol => {
+                if (usernameR.includes(symbol) || passwordR.includes(symbol)) {
+                    alert("No Special Characters Allowed")
+                    flag = false;
+                    return;
+                }
+            })
+            if (flag == false) {
+                return
+            }
             const response = await fetch("/api/usersR", {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -70,9 +79,10 @@ async function Register(usernameR, passwordR) {                                 
             if (response.status == 200) {
                 alert("Account Successfuly Registered")
             }
-            if (response.status == 500) {                                                        //constant db connection errors for no reason, ensures user doesn't have to retry if not checked credentials        
+            if (response.status == 500) {
                 await Register(usernameR, passwordR)
-            }
+
+            }                                                                                   //constant db connection errors for no reason, ensures user doesn't have to retry if not checked credentials
             if(response.status == 409) {
                 alert("Username Already Exists")
             }

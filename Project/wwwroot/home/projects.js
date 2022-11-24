@@ -1,4 +1,5 @@
-﻿
+﻿setup()                                                                                      //calling Main function
+
 async function getProjects() {                                                              //function to retrieve all projects
     const token = localStorage.getItem('authorization')
     const response = await fetch("/api/projects", {
@@ -8,7 +9,6 @@ async function getProjects() {                                                  
     if (response.ok) {
         console.log(response)
         var projects = await response.json()
-        console.log(projects)
         return projects
     }
 }
@@ -44,13 +44,6 @@ document.getElementById('saveProject').addEventListener('click', e => {         
 
     } else {                                                                                    //if username is empty
         alert("only logged in users can create a project")
-        var currentdate = new Date();
-        var datetime = "Last Sync: " + currentdate.getDate() + "/"
-            + (currentdate.getMonth() + 1) + "/"
-            + currentdate.getFullYear() + " @ "
-            + currentdate.getHours() + ":"
-            + currentdate.getMinutes() + ":"
-            + currentdate.getSeconds();
     }
    
 })
@@ -242,7 +235,8 @@ async function addProject(projectName, owner, dueby, brief, research, concept, d
                 var progress = selectList5.options[selectList5.selectedIndex].text;
                 var priority = selectList6.options[selectList6.selectedIndex].text;
                 var projectId = buttonSave.id
-                updateProject(projectId, brief, concept, progress, priority, mockup, design, research)
+                var dueby = project.dueBy
+                updateProject(projectId, brief, concept, progress, priority, mockup, design, research, dueby)
             })
             buttonRemove.addEventListener('click', e => {                                       //event listener, which removes a specific project, and all it's elements
                 removeProject(buttonRemove.id);
@@ -325,9 +319,7 @@ async function setup() {                                                        
                 let duebyProject = document.createElement('p')
                 let ownerProject = document.createElement('p')
                 let buttonSave = document.createElement('button')
-                let buttonRemove = document.createElement('button')
                 buttonSave.setAttribute('id', project.id)
-                buttonRemove.setAttribute('id', project.id)
                 ownerProject.setAttribute('class', 'title3')
                 duebyProject.setAttribute('class', 'title2')
                 titleProject.setAttribute('class', 'title1')
@@ -338,19 +330,21 @@ async function setup() {                                                        
                 selectList4.setAttribute('class', 'selectList4')
                 selectList5.setAttribute('class', 'selectList5')
                 selectList6.setAttribute('class', 'selectList6')
+                console.log(project)
                 duebyProject.innerHTML = project.dueBy
                 titleProject.innerHTML = project.title
                 ownerProject.innerHTML = project.owner
+                
                 for (var i = 0; i < checkList.length; i++) {                                            //loop through array of values, and select the one which was selected
                     var option = document.createElement("option")
                     option.value = checkList[i]
                     option.text = checkList[i]
                     console.log(project.briefStatus)
-                    if (option.text == project.briefStatus) {
+                    if (option.text == project.briefStatus) {// replace index object
                         option.selected = true;
                         console.log(option.text)
                     }
-                    selectList.appendChild(option)
+                    selectList.appendChild(option) // replace index in array
                 }
                 for (var i = 0; i < checkList.length; i++) {
                     var option1 = document.createElement("option")
@@ -407,7 +401,6 @@ async function setup() {                                                        
                     selectList6.appendChild(option6)
                 }
                 buttonSave.innerText = "Save Project"
-                buttonRemove.innerText = "Remove Project"
                 div.appendChild(titleProject)
                 div1.appendChild(duebyProject)
                 div2.appendChild(selectList)
@@ -419,8 +412,43 @@ async function setup() {                                                        
                 div8.appendChild(selectList6)
                 div9.appendChild(buttonSave)
                 div10.appendChild(ownerProject)
-                div11.appendChild(buttonRemove)
-                buttonRemove.setAttribute('class', 'projectButtons')                            
+
+                if (project.owner == user) {                                                            // checks if the projects owner is the same as the logged in user, if they match, the user is allowed to have a button to remove the project
+                    const buttonRemove = document.createElement('button')
+                    buttonRemove.setAttribute('id', project.id)
+                    buttonRemove.innerText = "Remove Project"
+                    div11.appendChild(buttonRemove)
+                    buttonRemove.setAttribute('class', 'projectButtons')
+                    container.appendChild(div11)
+                    buttonRemove.addEventListener('click', e => {                                       //removes a specific project and the html elements that were used by the project
+                        var log = removeProject(buttonRemove.id);
+                        div.remove();
+                        div1.remove();
+                        div2.remove();
+                        div3.remove();
+                        div4.remove();
+                        div5.remove();
+                        div6.remove();
+                        div7.remove();
+                        div8.remove();
+                        div9.remove();
+                        div10.remove();
+                        div11.remove();
+                    }
+                    )
+                }
+                buttonSave.addEventListener('click', e => {                                         //event listeners, which save the project if information was updated                        
+                    var brief = selectList.options[selectList.selectedIndex].text;
+                    var research = selectList1.options[selectList1.selectedIndex].text;               //updates UI with selected information from html values
+                    var concept = selectList2.options[selectList2.selectedIndex].text;
+                    var design = selectList3.options[selectList3.selectedIndex].text;
+                    var mockup = selectList4.options[selectList4.selectedIndex].text;
+                    var progress = selectList5.options[selectList5.selectedIndex].text;
+                    var priority = selectList6.options[selectList6.selectedIndex].text;
+                    var projectId = buttonSave.id
+                    var dueby = project.dueBy
+                    updateProject(projectId, brief, concept, progress, priority, mockup, design, research, dueby)
+                })
                 buttonSave.setAttribute('class', 'projectButtons')
                 container.appendChild(div)
                 container.appendChild(div1)
@@ -435,35 +463,7 @@ async function setup() {                                                        
                 container.appendChild(div9)
                 container.appendChild(div11)
                 document.getElementById("container1").querySelectorAll("div")
-                buttonSave.addEventListener('click', e => {                                         //event listeners, which save the project if information was updated
-                    console.log(buttonSave.id)                                                      //updates UI with selected information from html values
-                    console.log(project.title)
-                    var brief = selectList.options[selectList.selectedIndex].text;
-                    var research = selectList1.options[selectList1.selectedIndex].text;
-                    var concept = selectList2.options[selectList2.selectedIndex].text;
-                    var design = selectList3.options[selectList3.selectedIndex].text;
-                    var mockup = selectList4.options[selectList4.selectedIndex].text;
-                    var progress = selectList5.options[selectList5.selectedIndex].text;
-                    var priority = selectList6.options[selectList6.selectedIndex].text;
-                    var projectId = buttonSave.id
-                    updateProject(projectId, brief, concept, progress, priority, mockup, design, research)
-                })
-                buttonRemove.addEventListener('click', e => {                                       //removes a specific project and the html elements that were used by the project
-                    var log = removeProject(buttonRemove.id);
-                    div.remove();
-                    div1.remove();
-                    div2.remove();
-                    div3.remove();
-                    div4.remove();
-                    div5.remove();
-                    div6.remove();
-                    div7.remove();
-                    div8.remove();
-                    div9.remove();
-                    div10.remove();
-                    div11.remove();
-                }
-                )
+
             })
             var g = document.getElementById("container1").querySelectorAll("div")
             for (i = 0; i < g.length; i++) {                                                            //sets a class for html elements to later apply styling
@@ -477,12 +477,14 @@ async function setup() {                                                        
 }
 
 
-async function updateProject(projectId, brief, concept, progress, priority, mockup, design, research) {        //function to update a project
+async function updateProject(projectId, brief, concept, progress, priority, mockup, design, research, dueby) {
+    console.log(dueby)//function to update a project
     var response = await fetch("/api/projects", {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': localStorage.getItem('authorization') },
         body: JSON.stringify({
             Id: projectId,
+            DueBy: dueby,
             BriefStatus: brief,
             ResearchStatus: research,
             ConceptStatus: concept,
@@ -495,8 +497,8 @@ async function updateProject(projectId, brief, concept, progress, priority, mock
     if (response.ok) {
         var info = await response.json()
     }
-    else {                                                                                                      //recursion, if project wasn't updated, because of database connection
-        await updateProject()
+    if (response.status == 500) {                                                                                                      //recursion, if project wasn't updated, because of database connection
+        await updateProject(projectId, brief, concept, progress, priority, mockup, design, research, dueby)
     }
 }
 
@@ -509,9 +511,10 @@ async function removeProject(projectId) {                                       
         var info = await response.json()                                                                  
         return info.status;
     }
-    else {
-        await removeProject(projectId)                                                                             //recursion, in case of database connection error
+    if (repsonse.status == 500) {
+        
+                                                                                                                //recursion, in case of database connection error
     }
 
 }
-setup()                                                                                                         //calling Main function
+                                                                                                
